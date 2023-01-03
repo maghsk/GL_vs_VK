@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <iostream>
 #include <set>
+//#include <vulkan/vulkan_core.h>
+// #include <vulkan/vulkan_core.h>
 
 namespace {
 const std::vector<const char*> kInstanceLayers{};
@@ -81,10 +83,14 @@ vk::UniqueInstance Application::createInstance(const std::vector<const char*>& l
     initialize();
 
     std::vector<std::string> extensions = getRequiredExtensions();
+    extensions.emplace_back("VK_KHR_portability_enumeration");
+
     std::vector<const char*> extensionsView = viewOf(extensions);
     vk::ApplicationInfo applicationInfo{name().c_str(), VK_MAKE_VERSION(1, 0, 0), "LunarG SDK",
                                         VK_MAKE_VERSION(1, 0, 0), VK_API_VERSION_1_0};
-    vk::InstanceCreateInfo instanceInfo{{},
+
+    // VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR: 0x00000001
+    vk::InstanceCreateInfo instanceInfo{static_cast<vk::InstanceCreateFlagBits>(0x00000001),
                                         &applicationInfo,
                                         static_cast<uint32_t>(layers.size()),
                                         layers.data(),

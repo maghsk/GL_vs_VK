@@ -31,12 +31,11 @@ find_package(Threads REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(Vulkan REQUIRED)
 find_package(GLM REQUIRED)
-find_package(GLEW)
-if (WIN32)
-    find_package(GLFW3)
-else()
-    find_package(GLFW)
-endif()
+find_package(GLEW REQUIRED)
+find_package(GLFW3 REQUIRED)
+
+set(GLFW_LIBRARIES glfw)
+
 
 
 ###
@@ -44,32 +43,32 @@ endif()
 ###
 
 ### GLFW 3.2
-if(NOT (GLFW3_FOUND OR GLFW_FOUND))
-    MESSAGE("GLFW not found, building from third_party...")
-
-    set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-    set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-    set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-
-    set(GLFW_LIBRARIES glfw)
-    set(GLFW_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/third_party/glfw/include")
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../third_party/glfw ${CMAKE_CURRENT_BINARY_DIR}/../third_party/glfw)
-else()
-    set(GLFW_LIBRARIES glfw)
-endif()
+#if(NOT (GLFW3_FOUND OR GLFW_FOUND))
+#    MESSAGE("GLFW not found, building from third_party...")
+#
+#    set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+#    set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+#    set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+#
+#    set(GLFW_LIBRARIES glfw)
+#    set(GLFW_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/third_party/glfw/include")
+#    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../third_party/glfw ${CMAKE_CURRENT_BINARY_DIR}/../third_party/glfw)
+#else()
+#    set(GLFW_LIBRARIES glfw)
+#endif()
 
 ### GLEW
-if(NOT GLEW_FOUND)
-    MESSAGE("GLEW not found, building from third_party...")
-
-    set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
-    set(BUILD_UTILS OFF CACHE BOOL "" FORCE)
-    set(GLEW_LIBRARIES glew)
-
-    set(GLEW_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/third_party/glew/include")
-    execute_process(COMMAND make WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/third_party/glew/auto")
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../third_party/glew/build/cmake ${CMAKE_CURRENT_BINARY_DIR}/../third_party/glew/build/cmake)
-endif()
+#if(NOT GLEW_FOUND)
+#    MESSAGE("GLEW not found, building from third_party...")
+#
+#    set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+#    set(BUILD_UTILS OFF CACHE BOOL "" FORCE)
+#    set(GLEW_LIBRARIES glew)
+#
+#    set(GLEW_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/third_party/glew/include")
+#    execute_process(COMMAND make WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/third_party/glew/auto")
+#    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../third_party/glew/build/cmake ${CMAKE_CURRENT_BINARY_DIR}/../third_party/glew/build/cmake)
+#endif()
 
 
 ###
@@ -123,6 +122,7 @@ add_executable(GLvsVK_EXAMPLE_2D
 
 target_link_libraries(GLvsVK_EXAMPLE_2D
     ${GLvsVK_LINK_LIBRARIES}
+        GLEW::GLEW
 )
 
 set_target_properties(GLvsVK_EXAMPLE_2D PROPERTIES

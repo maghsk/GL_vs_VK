@@ -17,3 +17,7 @@ personal/*
 project/msvc/build/*
 
 third_party/glew-win/*
+
+/cmake-build-release/
+/cmake-build-debug/
+.idea

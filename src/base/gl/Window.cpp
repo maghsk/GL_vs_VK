@@ -292,6 +292,7 @@ void Window::setHints(const std::vector<std::pair<int, int>>& hints)
 
 void Window::setDefaultHints()
 {
+    setHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     setHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     setHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     setHint(GLFW_CONTEXT_VERSION_MINOR, 3);
