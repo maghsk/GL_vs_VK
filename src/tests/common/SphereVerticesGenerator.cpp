@@ -11,25 +11,23 @@ SphereVerticesGenerator::SphereVerticesGenerator(std::size_t slices, std::size_t
     , normals(generateNormals(slices, stacks))
 {
 }
+const double PI = acos(-1.0);
 
 std::vector<glm::vec4> SphereVerticesGenerator::generateVertices(std::size_t slices, std::size_t stacks, float radius)
 {
-    const double PI = 3.141592653589793;
-    const double sliceStep = 360.0 / (double)slices;
-    const double stackStep = 180.0 / (double)stacks;
+    const double sliceStep = PI * 2.0 / (double)slices;
+    const double stackStep = PI / (double)stacks;
     std::vector<glm::vec4> result;
 
-    auto degToRad = [PI](double deg) { return (PI / 180.0) * deg; };
-
-    auto pointOf = [degToRad, radius](double theta, double phi) {
-        return glm::vec4{radius * std::cos(degToRad(theta)) * std::cos(degToRad(phi)),
-                         radius * std::cos(degToRad(theta)) * std::sin(degToRad(phi)),
-                         radius * std::sin(degToRad(theta)), 1.0};
+    auto pointOf = [radius](double theta, double phi) {
+        return glm::vec4{radius * std::cos(theta) * std::cos(phi),
+                         radius * std::cos(theta) * std::sin(phi),
+                         radius * std::sin(theta), 1.0};
     };
 
     for (std::size_t stack = 0; stack < stacks; ++stack) {
-        double theta = -90.0 + stack * stackStep;
-        double thetaNext = -90.0 + (stack + 1) * stackStep;
+        double theta = -PI / 2.0 + stack * stackStep;
+        double thetaNext = -PI / 2.0 + (stack + 1) * stackStep;
 
         for (std::size_t slice = 0; slice < slices; ++slice) {
             double phi = slice * sliceStep;
@@ -50,22 +48,19 @@ std::vector<glm::vec4> SphereVerticesGenerator::generateVertices(std::size_t sli
 
 std::vector<glm::vec4> SphereVerticesGenerator::generateNormals(std::size_t slices, std::size_t stacks)
 {
-    const double PI = 3.141592653589793;
-    const double sliceStep = 360.0 / (double)slices;
-    const double stackStep = 180.0 / (double)stacks;
+    const double sliceStep = PI * 2.0 / (double)slices;
+    const double stackStep = PI / (double)stacks;
     std::vector<glm::vec4> result;
 
-    auto degToRad = [PI](double deg) { return (PI / 180.0) * deg; };
-
-    auto pointOf = [degToRad](double theta, double phi) {
-        return glm::vec4{std::cos(degToRad(theta)) * std::cos(degToRad(phi)), //
-                         std::cos(degToRad(theta)) * std::sin(degToRad(phi)), //
-                         std::sin(degToRad(theta)), 1.0};
+    auto pointOf = [](double theta, double phi) {
+        return glm::vec4{std::cos(theta) * std::cos(phi), //
+                         std::cos(theta) * std::sin(phi), //
+                         std::sin(theta), 1.0};
     };
 
     for (std::size_t stack = 0; stack < stacks; ++stack) {
-        double theta = -90.0 + stack * stackStep;
-        double thetaNext = -90.0 + (stack + 1) * stackStep;
+        double theta = -PI / 2.0 + stack * stackStep;
+        double thetaNext = -PI / 2.0 + (stack + 1) * stackStep;
 
         for (std::size_t slice = 0; slice < slices; ++slice) {
             double phi = slice * sliceStep;
