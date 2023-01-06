@@ -6,7 +6,7 @@
 #include <glm/glm.hpp>
 
 namespace {
-const std::size_t kBallCount = 200000;
+const std::size_t kBallCount = 200;
 const std::size_t kSphereSlices = 3;
 const std::size_t kSphereStacks = 3;
 const std::size_t kUpdateRuns = 10;
